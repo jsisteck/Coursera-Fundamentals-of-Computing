@@ -3,6 +3,7 @@
 import simplegui
 import random
 exposed = []
+turn = 0
 
 
 # helper function to initialize globals
@@ -27,7 +28,7 @@ def new_game():
 # define event handlers
 def mouseclick(pos):
     # add game state logic here
-    global exposed, state
+    global exposed, state, turn
     card_select = pos[0]//50
     if exposed[card_select] == 'False':
         exposed[card_select] = 'True'
@@ -35,21 +36,25 @@ def mouseclick(pos):
             state = 1
         elif state == 1:
             state = 2
+            turn +=1
         else:
             state = 1
     print state
-    #print card_select
+    print card_select
        
                         
 # cards are logically 50x100 pixels in size    
 def draw(canvas):
     global exposed
-   
+    #draw cards   
     for card_idx in range(len(full_deck)):
         card_pos = 50 * card_idx
         num_pos = [((card_pos) + 15), 60]
-        #for i in range(0,len(full_deck),3):
-        #    exposed[i] = 'True'
+        
+        if state == 0:
+            for i in range(len(full_deck)):
+                exposed[i] = 'False'
+        
         if exposed[card_idx] == 'True':
             canvas.draw_text(str(full_deck[card_idx]), num_pos, 36, 'White')
         else:
@@ -59,7 +64,7 @@ def draw(canvas):
 # create frame and add a button and labels
 frame = simplegui.create_frame("Memory", 800, 100)
 frame.add_button("Reset", new_game)
-label = frame.add_label("Turns = 0")
+label = frame.add_label("Turns = ")
 
 # register event handlers
 frame.set_draw_handler(draw)
