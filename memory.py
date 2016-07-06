@@ -28,19 +28,38 @@ def new_game():
 # define event handlers
 def mouseclick(pos):
     # add game state logic here
-    global exposed, state, turn
+    global exposed, state, turn, var1, var2
     card_select = pos[0]//50
+    
+    if state == 2:
+        if full_deck[var1] <> full_deck[var2]:
+            exposed[var1] = 'False'
+            exposed[var2] = 'False'
+    
     if exposed[card_select] == 'False':
         exposed[card_select] = 'True'
-        if state == 0:
-            state = 1
-        elif state == 1:
-            state = 2
-            turn +=1
-        else:
-            state = 1
-    print state
-    print card_select
+    
+    if state == 0:
+        state = 1
+        var1 = card_select
+        print var1, state
+            
+                    
+    elif state == 1:
+        state = 2
+        var2 = card_select
+        print var2, state
+        
+        turn +=1
+    else:
+        state = 1
+        var1 = card_select
+        print var1, state
+        
+  
+        
+    
+    #print card_select
        
                         
 # cards are logically 50x100 pixels in size    
